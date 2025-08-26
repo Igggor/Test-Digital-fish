@@ -1,36 +1,60 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-## Getting Started
+### Предисловие, которое мы читаем
 
-First, run the development server:
+На производстве существует множество задач, которые надо решать (ex. кормёжка рыбы,  чистка бассейнов и тд). На первом этапе, задача состоит в том, чтобы оптимизировать процесс назначения заданий, нам нужна программа, которая позволит рыбоводу оптимизировать свою работу. 
+Человек - в нашем случае, рыбовод, - гораздо эффективнее выполняет задания, если давать ему четкую последовательность действий и заданий, нежели он будет метаться от задачи к задаче. Это также поможет управляющим проще оценивать эффективность труда и отвешивать тумаки
+Поскольку у нас есть некая программа для нашего рыбовода, где он смотрит свои задачи, у нас также должна быть и админская программа, для назначения этих задач
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+### Образ задачи  
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Вам предстоит сделать админскую часть этой программы. Будем называть её таск-трекером.
+Таск-трекер представляет из себя [Kanban Board](https://en.wikipedia.org/wiki/Kanban_board). В самой простой концепци, у каждой задачи (таски) есть её описание и статус. Под каждый возможный статус отводится своя колонка. В зависимости от статуса таски, она отображается в соответствующей колонке. По клику на кнопку с соответствующим статусом, у нас таска переносится в нужный столбец. 
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+При этом, необходимо заложить функционал создания новой таски по кнопке
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Образ результата 
 
-## Learn More
+Таск-трекер со следующим функционалом
+- Работа с существующими тасками
+  - Отображение столбцов со статусами
+  - Отображение тасок как карточек со статусами в соответствующем столбце 
+  - Таски можно переносить между статусами по клику на соответствующие кнопки внутри них
+- Создание
+  - Создание таски по кнопке "Новая задача"
+  - Установка параметров таски при создании
+  - После создания задача появляется в соответствующей колонке
 
-To learn more about Next.js, take a look at the following resources:
+Также у доски чаще всего есть своё название и id. В нашем случае пусть она будет называться **"Задачи разработки"** и иметь id **"RAZRABOTKA-{id}"** (например первая созданная задачка будет **RAZRABOTKA-1**)
+У каждой задачки должен отображаться id 
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Обязательные условия
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+1) Минимум 3 колонки (TODO / IN_PROGRESS / DONE).
+2) Использовать **React / Next.js (App Router)**
+3) Хранение данных — пока можно **в состоянии (useState)**
+4) Структура кода: разделять компоненты (например, `TaskCard`, `Column`, `Board`).
+5) TypeScript: описать типы для задачи и статусов.
 
-## Deploy on Vercel
+Чтобы вы не тратили время на думать, Аркаша набросал тупой макет в фигме: https://www.figma.com/design/NkBjHRA7jP9vT23IbJ410t/Task-Tracker?node-id=0-1&t=OzzztbAtmjGVDDqo-1
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Общее
+
+Чтобы не нагружать вас ещё и работой с CI/CD, можно ограничиться локальным запуском проекта `npm run dev` 
+
+
+
+### Важное
+
+Это не соревнование между вами, а первая часть вашей совместной работы! Лучшим результатом будет ваш рост в работе с инструментами разработки фронта <3 
+
+
+
+
+
+***"Нормально делай, нормально будет"***
+
+**Json Stateham, 228г до н.э.**
+
+
+

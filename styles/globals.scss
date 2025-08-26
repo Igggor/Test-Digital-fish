@@ -1,0 +1,22 @@
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  background: #f9f9f9;
+}
+
+button {
+  border: none;
+  padding: 6px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+
+  &.primary {
+    background: #0070f3;
+    color: white;
+  }
+
+  &.danger {
+    background: #e63946;
+    color: white;
+  }
+}
