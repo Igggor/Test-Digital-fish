@@ -5,38 +5,27 @@ import Column from "./Column";
 import { Task, Status } from "@/types/task";
 import "../styles/board.scss";
 import Link from "next/link";
+import { ensureDefaults } from "@/lib/storage";
 
 export default function Board() {
     const [tasks, setTasks] = useState<Task[]>([]);
 
-    // Загружаем из localStorage
+    // Загружаем из localStorage/дефолты при маунте
     useEffect(() => {
-        const saved = localStorage.getItem("tasks");
-        if (saved) {
-            setTasks(JSON.parse(saved));
-        } else {
-            // 👇 Если пусто — создаём дефолтную задачу
-            const defaultTask: Task = {
-                id: "RAZRABOTKA-1",
-                title: "Пример задачи",
-                description: "Это автоматически созданная задача для примера.",
-                type: "Стандарт",
-                status: Status.TODO,
-            };
-            localStorage.setItem("tasks", JSON.stringify([defaultTask]));
-            setTasks([defaultTask]);
-        }
+        const loaded = ensureDefaults();
+        setTasks(loaded);
     }, []);
 
-    // Сохраняем при изменении
-    useEffect(() => {
-        if (tasks.length > 0) {
-            localStorage.setItem("tasks", JSON.stringify(tasks));
-        }
-    }, [tasks]);
-
+    // Обновление статуса задачи
     const moveTask = (id: string, status: Status) => {
-        setTasks(tasks.map(task => task.id === id ? { ...task, status } : task));
+        setTasks((prev) => {
+            const updated = prev.map((task) =>
+                task.id === id ? { ...task, status } : task
+            );
+            // Сохраним в localStorage
+            localStorage.setItem("tasks", JSON.stringify(updated));
+            return updated;
+        });
     };
 
     return (

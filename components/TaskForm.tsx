@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import React, { useState } from "react";
 import { Status, Task } from "@/types/task";
 import { useRouter } from "next/navigation";
+import { nextId, loadTasks, saveTasks } from "@/lib/storage";
 
 interface TaskFormProps {
     editMode?: boolean;
@@ -17,28 +18,16 @@ export default function TaskForm({ editMode }: TaskFormProps) {
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
 
-        // Получаем список задач
-        const saved = localStorage.getItem("tasks");
-        const tasks: Task[] = saved ? JSON.parse(saved) : [];
-
-        // 👇 берём и обновляем глобальный счётчик id
-        const counter = Number(localStorage.getItem("taskCounter") || "1");
-        const newId = `RAZRABOTKA-${counter}`;
-        localStorage.setItem("taskCounter", String(counter + 1));
-
-        // Создаём задачу
+        const tasks: Task[] = loadTasks();
         const newTask: Task = {
-            id: newId,
+            id: nextId(),
             title,
             description,
             type,
-            status: Status.TODO,
+            status: Status.TODO, // новые задачи начинаем в TODO
         };
 
-        const updated = [...tasks, newTask];
-        localStorage.setItem("tasks", JSON.stringify(updated));
-
-        // редирект на главную
+        saveTasks([...tasks, newTask]);
         router.push("/");
     };
 
@@ -46,15 +35,22 @@ export default function TaskForm({ editMode }: TaskFormProps) {
         <form onSubmit={handleSubmit}>
             <div>
                 <label>Название задачи*</label>
-                <input value={title} onChange={e => setTitle(e.target.value)} required />
+                <input
+                    value={title}
+                    onChange={(e) => setTitle(e.target.value)}
+                    required
+                />
             </div>
             <div>
                 <label>Описание</label>
-                <textarea value={description} onChange={e => setDescription(e.target.value)} />
+                <textarea
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                />
             </div>
             <div>
                 <label>Тип задачи</label>
-                <input value={type} onChange={e => setType(e.target.value)} />
+                <input value={type} onChange={(e) => setType(e.target.value)} />
             </div>
             <div style={{ marginTop: "10px" }}>
                 <button type="submit" className="primary">

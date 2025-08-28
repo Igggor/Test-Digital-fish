@@ -17,7 +17,9 @@ export default function TaskCard({ task, moveTask }: TaskCardProps) {
                     <button onClick={() => moveTask(task.id, Status.TODO)}>TODO</button>
                 )}
                 {task.status !== Status.IN_PROGRESS && (
-                    <button onClick={() => moveTask(task.id, Status.IN_PROGRESS)}>В работу</button>
+                    <button onClick={() => moveTask(task.id, Status.IN_PROGRESS)}>
+                        В работу
+                    </button>
                 )}
                 {task.status !== Status.DONE && (
                     <button onClick={() => moveTask(task.id, Status.DONE)}>Сделано</button>
