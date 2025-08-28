@@ -14,12 +14,25 @@ export default function Board() {
         const saved = localStorage.getItem("tasks");
         if (saved) {
             setTasks(JSON.parse(saved));
+        } else {
+            // 👇 Если пусто — создаём дефолтную задачу
+            const defaultTask: Task = {
+                id: "RAZRABOTKA-1",
+                title: "Пример задачи",
+                description: "Это автоматически созданная задача для примера.",
+                type: "Стандарт",
+                status: Status.TODO,
+            };
+            localStorage.setItem("tasks", JSON.stringify([defaultTask]));
+            setTasks([defaultTask]);
         }
     }, []);
 
     // Сохраняем при изменении
     useEffect(() => {
-        localStorage.setItem("tasks", JSON.stringify(tasks));
+        if (tasks.length > 0) {
+            localStorage.setItem("tasks", JSON.stringify(tasks));
+        }
     }, [tasks]);
 
     const moveTask = (id: string, status: Status) => {

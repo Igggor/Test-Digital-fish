@@ -17,27 +17,28 @@ export default function TaskForm({ editMode }: TaskFormProps) {
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
 
-        // Получаем список задач из localStorage
+        // Получаем список задач
         const saved = localStorage.getItem("tasks");
         const tasks: Task[] = saved ? JSON.parse(saved) : [];
 
-        // Генерируем новый ID
-        const newId = `RAZRABOTKA-${tasks.length + 1}`;
+        // 👇 берём и обновляем глобальный счётчик id
+        const counter = Number(localStorage.getItem("taskCounter") || "1");
+        const newId = `RAZRABOTKA-${counter}`;
+        localStorage.setItem("taskCounter", String(counter + 1));
 
-        // Создаём новую задачу
+        // Создаём задачу
         const newTask: Task = {
             id: newId,
             title,
             description,
             type,
-            status: Status.TODO, // новые задачи начинаем в TODO
+            status: Status.TODO,
         };
 
-        // Добавляем в массив
         const updated = [...tasks, newTask];
         localStorage.setItem("tasks", JSON.stringify(updated));
 
-        // Возврат на главную
+        // редирект на главную
         router.push("/");
     };
 
